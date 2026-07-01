@@ -1,16 +1,17 @@
 FROM php:8.2-apache
 
-# Fix MPM conflict by disabling conflicting modules
-RUN a2dismod mpm_event mpm_worker || true && \
-    a2enmod mpm_prefork
+# Install mysqli
+RUN docker-php-ext-install mysqli && \
+    docker-php-ext-enable mysqli
 
-# Install MySQL extension
-RUN docker-php-ext-install mysqli
+# Enable Apache modules
+RUN a2enmod rewrite
 
-# Copy all files
+# Copy application files
 COPY . /var/www/html/
 
-# Enable mod_rewrite
-RUN a2enmod rewrite
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
 EXPOSE 80
