@@ -3,12 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'marks_system';
+// Get database credentials from Railway environment variables
+$host = getenv('MYSQLHOST') ?: 'localhost';
+$username = getenv('MYSQLUSER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: '';
+$database = getenv('MYSQLDATABASE') ?: 'marks_system';
+$port = getenv('MYSQLPORT') ?: 3306;
 
-$conn = mysqli_connect($host, $username, $password, $database);
+// Create connection
+$conn = mysqli_connect($host, $username, $password, $database, $port);
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
