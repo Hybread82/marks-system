@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Get database credentials from Railway environment variables
+// Get database credentials from Railway environment
 $host = getenv('MYSQLHOST') ?: 'localhost';
 $username = getenv('MYSQLUSER') ?: 'root';
 $password = getenv('MYSQLPASSWORD') ?: '';
